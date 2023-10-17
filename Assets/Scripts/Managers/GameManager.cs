@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public int m_NumRoundsToWin = 5;            // The number of rounds a single player has to win to win the game.
+    public int m_NumRoundsToWin = 1;            // The number of rounds a single player has to win to win the game.
     public float m_StartDelay = 3f;             // The delay between the start of RoundStarting and RoundPlaying phases.
     public float m_EndDelay = 3f;               // The delay between the end of RoundPlaying and RoundEnding phases.
     public CameraControl m_CameraControl;       // Reference to the CameraControl script for control during different phases.
@@ -109,6 +109,20 @@ public class GameManager : MonoBehaviour
         yield return m_StartWait;
     }
 
+    private void respawnTanks() {
+
+        for (int i = 0; i < m_Tanks.Length; i++)
+        {
+            // ... and if they are active, increment the counter.
+            if (!m_Tanks[i].m_Instance.activeSelf)
+            {
+                Debug.Log("Called reset");
+                m_Tanks[i].Reset();
+            }
+
+        }
+
+    }
 
     private IEnumerator RoundPlaying ()
     {
@@ -117,10 +131,10 @@ public class GameManager : MonoBehaviour
 
         // Clear the text from the screen.
         m_MessageText.text = string.Empty;
-
         // While there is not one tank left...
-        while (!OneTankLeft())
+        while (true)
         {
+            respawnTanks();
             // ... return on the next frame.
             yield return null;
         }
@@ -169,7 +183,7 @@ public class GameManager : MonoBehaviour
         }
 
         // If there are one or fewer tanks remaining return true, otherwise return false.
-        return numTanksLeft <= 1;
+        return false;
     }
 
 
