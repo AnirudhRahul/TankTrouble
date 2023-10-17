@@ -11,6 +11,7 @@ public class TankHealth : MonoBehaviour
     public Color m_CoinColor = Color.blue;
     public GameObject m_ExplosionPrefab;
     public bool m_hasCoin;
+    public Text scoreText;
 
     private AudioSource m_ExplosionAudio;          
     private ParticleSystem m_ExplosionParticles;   
@@ -52,7 +53,11 @@ public class TankHealth : MonoBehaviour
         m_hasCoin = true;
         SetHealthUI();
     }
-
+    public void DropCoin()
+    {
+        m_hasCoin = false;
+        SetHealthUI();
+    }
 
     private void SetHealthUI()
     {
