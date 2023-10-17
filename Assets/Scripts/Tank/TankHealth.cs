@@ -7,9 +7,11 @@ public class TankHealth : MonoBehaviour
     public Slider m_Slider;                        
     public Image m_FillImage;                      
     public Color m_FullHealthColor = Color.green;  
-    public Color m_ZeroHealthColor = Color.red;    
+    public Color m_ZeroHealthColor = Color.red;
+    public Color m_CoinColor = Color.blue;
     public GameObject m_ExplosionPrefab;
-    
+    public bool m_hasCoin;
+
     private AudioSource m_ExplosionAudio;          
     private ParticleSystem m_ExplosionParticles;   
     private float m_CurrentHealth;  
@@ -29,7 +31,7 @@ public class TankHealth : MonoBehaviour
     {
         m_CurrentHealth = m_StartingHealth;
         m_Dead = false;
-
+        m_hasCoin = false;
         SetHealthUI();
     }
     
@@ -45,12 +47,22 @@ public class TankHealth : MonoBehaviour
         }
     }
 
+    public void GetCoin()
+    {
+        m_hasCoin = true;
+        SetHealthUI();
+    }
+
 
     private void SetHealthUI()
     {
         // Adjust the value and colour of the slider.
         m_Slider.value = m_CurrentHealth;
         m_FillImage.color = Color.Lerp(m_ZeroHealthColor, m_FullHealthColor, m_CurrentHealth/m_StartingHealth);
+        if (m_hasCoin)
+        {
+            m_FillImage.color = m_CoinColor;
+        }
     }
 
 

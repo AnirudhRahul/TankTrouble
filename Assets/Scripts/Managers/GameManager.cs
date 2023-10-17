@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public CameraControl m_CameraControl;       // Reference to the CameraControl script for control during different phases.
     public Text m_MessageText;                  // Reference to the overlay Text to display winning text, etc.
     public GameObject m_TankPrefab;             // Reference to the prefab the players will control.
+    public GameObject m_CoinPrefab;             // Reference to the prefab the players will control.
     public TankManager[] m_Tanks;               // A collection of managers for enabling and disabling different aspects of the tanks.
 
 
@@ -45,6 +46,18 @@ public class GameManager : MonoBehaviour
             m_Tanks[i].m_PlayerNumber = i + 1;
             m_Tanks[i].Setup();
         }
+
+
+        int scale = 30;
+
+       for (int i = 0; i < 10; i++)
+        {
+            float randX = Random.Range(-scale, scale);
+            float randZ = Random.Range(-scale, scale);
+
+            Instantiate(m_CoinPrefab, new Vector3(randX, 0, randZ), Quaternion.Euler(0, 0, 0) );
+        }
+
     }
 
 
