@@ -82,8 +82,14 @@ public class ShellExplosion : MonoBehaviour
         float damage = relativeDistance * m_MaxDamage;
 
         // Make sure that the minimum damage is always 0.
-        damage = Mathf.Max (0f, damage);
+        if (damage > 0)
+        {
+            return 1f;
+        }
+        else
+        {
+            return 0f;
+        }
 
-        return damage;
     }
 }

@@ -61,7 +61,7 @@ public class TankHealth : MonoBehaviour
     private void SetHealthUI()
     {
         // Adjust the value and colour of the slider.
-        m_Slider.value = m_CurrentHealth;
+        m_Slider.value = 100;
         m_FillImage.color = Color.Lerp(m_ZeroHealthColor, m_FullHealthColor, m_CurrentHealth/m_StartingHealth);
         if (m_hasCoin)
         {
