@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public GameObject m_TankPrefab;             // Reference to the prefab the players will control.
     public GameObject m_CoinPrefab;             // Reference to the prefab the players will control.
     public TankManager[] m_Tanks;               // A collection of managers for enabling and disabling different aspects of the tanks.
-
+    public Score score;
 
     private int m_RoundNumber;                  // Which round the game is currently on.
     private WaitForSeconds m_StartWait;         // Used to have a delay whilst the round starts.
@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
 
         int scale = 30;
 
-       for (int i = 0; i < 10; i++)
+       for (int i = 0; i < 5; i++)
         {
             float randX = Random.Range(-scale, scale);
             float randZ = Random.Range(-scale, scale);
@@ -90,11 +90,13 @@ public class GameManager : MonoBehaviour
         // Once execution has returned here, run the 'RoundEnding' coroutine, again don't return until it's finished.
         yield return StartCoroutine (RoundEnding());
 
+
+        Application.LoadLevel(Application.loadedLevel);
+
         // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
         if (m_GameWinner != null)
         {
             // If there is a game winner, restart the level.
-            Application.LoadLevel (Application.loadedLevel);
         }
         else
         {
@@ -133,9 +135,19 @@ public class GameManager : MonoBehaviour
                 m_Tanks[i].Reset();
             }
 
+            Vector3 spawn = m_Tanks[i].m_SpawnPoint.position;
+            Vector3 cur = m_Tanks[i].m_Instance.transform.position;
+
+
+            if( Vector3.Distance(spawn, cur) < 7f  && m_Tanks[i].m_Health.m_hasCoin)
+            {
+                m_Tanks[i].m_Health.DropCoin();
+                score.incrementPlayer(i);
+            }
         }
 
     }
+
 
     private IEnumerator RoundPlaying ()
     {
@@ -145,7 +157,7 @@ public class GameManager : MonoBehaviour
         // Clear the text from the screen.
         m_MessageText.text = string.Empty;
         // While there is not one tank left...
-        while (true)
+        while (score.max() < 3)
         {
             respawnTanks();
             // ... return on the next frame.
@@ -176,6 +188,7 @@ public class GameManager : MonoBehaviour
         string message = EndMessage ();
         m_MessageText.text = message;
 
+        score.reset();
         // Wait for the specified length of time until yielding control back to the game loop.
         yield return m_EndWait;
     }
@@ -205,15 +218,10 @@ public class GameManager : MonoBehaviour
     private TankManager GetRoundWinner()
     {
         // Go through all the tanks...
-        for (int i = 0; i < m_Tanks.Length; i++)
-        {
-            // ... and if one of them is active, it is the winner so return it.
-            if (m_Tanks[i].m_Instance.activeSelf)
-                return m_Tanks[i];
-        }
+        return m_Tanks[score.winner()];
+        
 
-        // If none of the tanks are active it is a draw so return null.
-        return null;
+ 
     }
 
 
@@ -224,7 +232,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < m_Tanks.Length; i++)
         {
             // ... and if one of them has enough rounds to win the game, return it.
-            if (m_Tanks[i].m_Wins == m_NumRoundsToWin)
+            if (m_Tanks[i].m_Wins >= m_NumRoundsToWin)
                 return m_Tanks[i];
         }
 

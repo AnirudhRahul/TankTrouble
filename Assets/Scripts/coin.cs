@@ -15,10 +15,6 @@ public class coin : MonoBehaviour
     private void OnTriggerEnter(Collider collider)
     {
 
-
-
-    
-
         Rigidbody targetRigidbody = collider.GetComponent<Rigidbody>();
         TankHealth targetHealth = targetRigidbody.GetComponent<TankHealth>();
         if (!targetHealth.m_hasCoin) { 

@@ -11,12 +11,11 @@ public class TankHealth : MonoBehaviour
     public Color m_CoinColor = Color.blue;
     public GameObject m_ExplosionPrefab;
     public bool m_hasCoin;
-    public Text scoreText;
 
     private AudioSource m_ExplosionAudio;          
     private ParticleSystem m_ExplosionParticles;   
     private float m_CurrentHealth;  
-    public bool m_Dead;            
+    public bool m_Dead;
 
 
     private void Awake()
