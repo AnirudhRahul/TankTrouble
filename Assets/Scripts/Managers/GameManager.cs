@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     private WaitForSeconds m_EndWait;           // Used to have a delay whilst the round or game ends.
     private TankManager m_RoundWinner;          // Reference to the winner of the current round.  Used to make an announcement of who won.
     private TankManager m_GameWinner;           // Reference to the winner of the game.  Used to make an announcement of who won.
+    private Quaternion noRotation = Quaternion.Euler(0, 0, 0);
 
 
     private void Start()
@@ -55,11 +56,16 @@ public class GameManager : MonoBehaviour
             float randX = Random.Range(-scale, scale);
             float randZ = Random.Range(-scale, scale);
 
-            Instantiate(m_CoinPrefab, new Vector3(randX, 0, randZ), Quaternion.Euler(0, 0, 0) );
+            Instantiate(m_CoinPrefab, new Vector3(randX, 0, randZ), noRotation);
         }
 
     }
 
+    // called when a player dies with a coin, since we need the coin to respawn at the place it used to be
+    public void SpawnOldCoin(Vector3 coinPos)
+    {
+        Instantiate(m_CoinPrefab, coinPos, noRotation);
+    }
 
     private void SetCameraTargets()
     {

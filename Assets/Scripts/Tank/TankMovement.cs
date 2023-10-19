@@ -24,6 +24,18 @@ public class TankMovement : MonoBehaviour
         m_Rigidbody = GetComponent<Rigidbody>();
     }
 
+    public void resetSpeedAndTurnSpeed()
+    {
+        m_Speed = 12f;
+        m_TurnSpeed = 180f;
+    }
+
+    public void doubleSpeedAndTurnSpeed()
+    {
+        m_Speed = 24f;
+        m_TurnSpeed = 360f;
+    }
+
 
     private void OnEnable ()
     {

@@ -12,18 +12,23 @@ public class Booster : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider collider) {
-        Rigidbody targetRigidbody = collider.GetComponent<Rigidbody>();
-        TankMovement targetMovement = targetRigidbody.GetComponent<TankMovement>();
-        targetMovement.m_Speed = 24f;
-        targetMovement.m_TurnSpeed = 360f;  
+    private void OnCollisionEnter(Collision collision) {
+        Rigidbody targetRigidbody = collision.rigidbody;
+        TankMovement tankMovement = targetRigidbody.GetComponent<TankMovement>();
+        TankShooting tankShooting = targetRigidbody.GetComponent<TankShooting>();
+        tankMovement.doubleSpeedAndTurnSpeed();
+        tankShooting.disableShooting();
+
+        
     }
 
-    private void OnTriggerExit(Collider collider) {
-        Rigidbody targetRigidbody = collider.GetComponent<Rigidbody>();
+    private void OnCollisionExit(Collision collision) {
+        Rigidbody targetRigidbody = collision.rigidbody;
         TankMovement targetMovement = targetRigidbody.GetComponent<TankMovement>();
-        targetMovement.m_Speed = 12f;
-        targetMovement.m_TurnSpeed = 180f; 
+        TankShooting tankShooting = targetRigidbody.GetComponent<TankShooting>();
+        targetMovement.resetSpeedAndTurnSpeed();
+        tankShooting.enableShooting();
+        
     }
 
     // Update is called once per frame

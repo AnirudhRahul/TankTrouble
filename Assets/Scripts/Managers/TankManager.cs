@@ -78,6 +78,16 @@ public class TankManager
         m_Instance.transform.position = m_SpawnPoint.position;
         m_Instance.transform.rotation = m_SpawnPoint.rotation;
 
+        // This is necessary because speed will stay doubled if the tank died while on the speed-boost plane lol
+        m_Movement = m_Instance.GetComponent<TankMovement>();
+        m_Movement.resetSpeedAndTurnSpeed();
+
+        // Enable shooting again
+        m_Shooting = m_Instance.GetComponent<TankShooting>();
+        m_Shooting.enableShooting();
+
+
+
         m_Instance.SetActive (false);
         m_Instance.SetActive (true);
     }

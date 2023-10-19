@@ -18,7 +18,7 @@ public class coin : MonoBehaviour
         Rigidbody targetRigidbody = collider.GetComponent<Rigidbody>();
         TankHealth targetHealth = targetRigidbody.GetComponent<TankHealth>();
         if (!targetHealth.m_hasCoin) { 
-            targetHealth.GetCoin();
+            targetHealth.GetCoin(transform.position);
             Destroy(gameObject);
         }
 

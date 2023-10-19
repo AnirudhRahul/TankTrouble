@@ -16,7 +16,11 @@ public class TankHealth : MonoBehaviour
     private ParticleSystem m_ExplosionParticles;   
     private float m_CurrentHealth;  
     public bool m_Dead;
+    private Vector3 originalCoinPosition;
+    public GameManager gameManager;
 
+
+    // In the Start method, find and set the GameManager reference.
 
     private void Awake()
     {
@@ -47,9 +51,10 @@ public class TankHealth : MonoBehaviour
         }
     }
 
-    public void GetCoin()
+    public void GetCoin(Vector3 coinPos)
     {
         m_hasCoin = true;
+        originalCoinPosition = coinPos;
         SetHealthUI();
     }
     public void DropCoin()
@@ -72,10 +77,12 @@ public class TankHealth : MonoBehaviour
 
     private void OnDeath()
     {
+        gameManager = FindObjectOfType<GameManager>();
         // Play the effects for the death of the tank and deactivate it.
         m_Dead = true;
         m_ExplosionParticles.transform.position=transform.position;
         m_ExplosionParticles.gameObject.SetActive(true);
+        if (m_hasCoin) gameManager.SpawnOldCoin(originalCoinPosition);
 
         m_ExplosionParticles.Play();
         m_ExplosionAudio.Play();
